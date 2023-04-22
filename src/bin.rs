@@ -4,9 +4,17 @@ use clap::{Parser, Subcommand};
 use log::info;
 use types::BaseConfig;
 use env_logger;
+use network::ping;
 
+use crate::{network::arp, types::ArpConfig};
+
+/**
+ * Modules
+ */
+mod utils;
 mod types;
-mod ping;
+mod network;
+
 
 #[derive(Parser, Debug)]
 #[command(version)]
@@ -26,6 +34,13 @@ enum Command {
     ping {
         /// Target ip
         ip: String
+    },
+    /// Check Arp
+    arp {
+        /// dest_ip is used by finding mac address
+        dest_ip: String,
+        /// Network interface name
+        interface_name: String
     }
 }
 
@@ -42,6 +57,11 @@ fn main() {
         Command::ping { ip } => { 
             let config = BaseConfig { ip: ip.to_string() };
             ping::ping(config)
+        }
+        Command::arp { dest_ip , interface_name } => {
+            let config = ArpConfig 
+                { dest_ip: dest_ip.to_string(), interface_name: interface_name.to_string() };
+            arp::arp(config);
         }
     }
 }

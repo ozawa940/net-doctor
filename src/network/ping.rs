@@ -26,6 +26,7 @@ use std::time::Duration;
 use crate::types::BaseConfig;
 
 const MAX_PACKET_SIZE: usize = 44;
+const PING_TIME_OUT: u64 = 3000;
 
 /**
  * Send icmp packet
@@ -60,7 +61,7 @@ pub fn ping(config: BaseConfig) {
         let send_packet = Ipv4Packet::new(&ip_packet.packet()).unwrap();
         tx.send_to(send_packet, IpAddr::V4(dest_ip)).unwrap();
 
-        match rx.next_with_timeout(Duration::from_millis(3000)) {
+        match rx.next_with_timeout(Duration::from_millis(PING_TIME_OUT)) {
             Ok(ip_response) => {
                 // Check icmp response
                 let tmp_p = ip_response.unwrap_or_else(|| {
