@@ -1,0 +1,21 @@
+[package]
+name = "net-doctor"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+
+[dependencies]
+clap = { version = "4.2.3", features=["derive"]}
+pnet = "0.33.0"
+log = "0.4.17"
+env_logger = "0.10.0"
+rand = "0.8.5"
+
+[lib]
+name = "ndt"
+
+[[bin]]
+name = "ndt"
+doc = false
+path = "src/bin.rs"
