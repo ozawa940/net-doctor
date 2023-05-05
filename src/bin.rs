@@ -6,7 +6,7 @@ use types::BaseConfig;
 use env_logger;
 use network::ping;
 
-use crate::{network::arp, types::ArpConfig};
+use crate::{network::{arp, port_scan, dns}, types::{ArpConfig, DnsConfig}};
 
 /**
  * Modules
@@ -41,7 +41,16 @@ enum Command {
         dest_ip: String,
         /// Network interface name
         interface_name: String
-    }
+    },
+    /// Check Dns
+    dns {
+        /// target domain name
+        domain: String,
+        /// Network interface name
+        interface_name: String
+    },
+    /// Check port
+    port_scan
 }
 
 fn main() {
@@ -62,6 +71,16 @@ fn main() {
             let config = ArpConfig 
                 { dest_ip: dest_ip.to_string(), interface_name: interface_name.to_string() };
             arp::arp(config);
+        }
+        Command::dns { domain, interface_name } => {
+            let config = DnsConfig {
+                domain: domain.to_string(),
+                interface_name: interface_name.to_string()
+            };
+            dns::dns(config);
+        }
+        Command::port_scan => {
+            port_scan::port_scan();
         }
     }
 }

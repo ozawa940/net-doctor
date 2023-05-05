@@ -13,3 +13,8 @@ pub struct ArpConfig {
     pub dest_ip: String,
     pub interface_name: String
 }
+
+pub struct DnsConfig {
+    pub domain: String,
+    pub interface_name: String
+}

@@ -64,7 +64,6 @@ pub fn arp(config: ArpConfig) {
                     EtherTypes::Arp => {
                         let a_res_packet = ArpPacket::new(&e_res_packet.payload()).unwrap();
                         if a_res_packet.get_operation() != ArpOperations::Reply {
-                            thread::sleep(Duration::from_millis(1000));
                             continue;
                         }
                         debug!("Arp: Response arp packet {:?}", a_res_packet);
@@ -81,6 +80,7 @@ pub fn arp(config: ArpConfig) {
                     info!("Arp: Getting arp packet is TimeOut");
                     break;
                 }
+                thread::sleep(Duration::from_millis(1000));
                 timeout_count += 1;
             }
             Err(e) => {
