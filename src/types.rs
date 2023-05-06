@@ -1,3 +1,5 @@
+use clap::builder::Str;
+
 
 /**
  * Command base config
@@ -16,5 +18,10 @@ pub struct ArpConfig {
 
 pub struct DnsConfig {
     pub domain: String,
+    pub interface_name: String
+}
+
+pub struct EchoConfig {
+    pub ip: String,
     pub interface_name: String
 }

@@ -6,7 +6,7 @@ use types::BaseConfig;
 use env_logger;
 use network::ping;
 
-use crate::{network::{arp, port_scan, dns}, types::{ArpConfig, DnsConfig}};
+use crate::{network::{arp, port_scan, dns, udp_echo}, types::{ArpConfig, DnsConfig, EchoConfig}};
 
 /**
  * Modules
@@ -50,12 +50,14 @@ enum Command {
         interface_name: String
     },
     /// Check port
-    port_scan
+    port_scan,
+    /// Echo
+    echo {
+        /// target ip
+        ip: String,
+    }
 }
-
-fn main() {
-    let args = Args::parse();
-
+fn main() { let args = Args::parse();
     env::set_var("RUST_LOG", args.log_level.as_str());
     env_logger::init();
 
@@ -81,6 +83,10 @@ fn main() {
         }
         Command::port_scan => {
             port_scan::port_scan();
+        }
+        Command::echo { ip } => {
+            let config = BaseConfig { ip: ip.to_string() };
+            udp_echo::udp_echo(config)
         }
     }
 }
